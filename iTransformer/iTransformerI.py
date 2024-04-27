@@ -96,7 +96,6 @@ class iTransformerI(Module):
         depth: int,
         dim: int,
         dim_name: int,
-        n_names: int,
         num_tokens_per_variate = 1,
         pred_length: Union[int, Tuple[int, ...]],
         dim_head = 32,
@@ -130,7 +129,7 @@ class iTransformerI(Module):
                 nn.LayerNorm(dim)
             ]))
 
-        self.name_embedding = nn.Embedding(n_names, dim_name)
+        self.name_embedding = nn.Embedding(num_variates, dim_name)
 
         self.mlp_in = nn.Sequential(
             nn.Linear(lookback_len + dim_name, dim * num_tokens_per_variate),
@@ -176,7 +175,7 @@ class iTransformerI(Module):
         if exists(self.reversible_instance_norm):
             x, reverse_fn = self.reversible_instance_norm(x)
 
-        name_embeddings = self.name_embedding(torch.arange(num_variates).repeat(batch_size, 1))
+        name_embeddings = self.name_embedding(torch.arange(self.num_variates).repeat(batch_size, 1))
 
         x = torch.cat((x, name_embeddings), dim=2)
         
