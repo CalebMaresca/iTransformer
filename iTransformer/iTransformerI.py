@@ -175,7 +175,7 @@ class iTransformerI(Module):
         if exists(self.reversible_instance_norm):
             x, reverse_fn = self.reversible_instance_norm(x)
 
-        name_embeddings = self.name_embedding(torch.arange(self.num_variates).repeat(x.shape[0], 1))
+        name_embeddings = self.name_embedding(torch.arange(self.num_variates, device=x.device).repeat(x.shape[0], 1))
 
         x = torch.cat((x, name_embeddings), dim=2)
         
