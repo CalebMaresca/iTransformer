@@ -86,7 +86,7 @@ def FeedForward(dim, mult = 4, dropout = 0.):
 
 # main class
 
-class iTransformer(Module):
+class iTransformerI(Module):
     @beartype
     def __init__(
         self,
